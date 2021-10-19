@@ -22,10 +22,10 @@ func NewFSM() *_FSM {
 
 func (fsm *_FSM) nextStep(c byte) bool {
 	transMap := map[string][4]string{
-		"begin":  [4]string{"begin", "signed", "number", "end"},
-		"signed": [4]string{"end", "end", "number", "end"},
-		"number": [4]string{"end", "end", "number", "end"},
-		"end":    [4]string{"end", "end", "end", "end"},
+		"begin":  [4]string{"begin", "signed", "number", "nextIdx"},
+		"signed": [4]string{"nextIdx", "nextIdx", "number", "nextIdx"},
+		"number": [4]string{"nextIdx", "nextIdx", "number", "nextIdx"},
+		"nextIdx":    [4]string{"nextIdx", "nextIdx", "nextIdx", "nextIdx"},
 	}
 
 	t := fsm.getType(c)
@@ -43,7 +43,7 @@ func (fsm *_FSM) nextStep(c byte) bool {
 		fsm.number *= 10
 		fsm.number += d
 	}
-	if fsm.state == "end" {
+	if fsm.state == "nextIdx" {
 		return false
 	}
 	return true
